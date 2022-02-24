@@ -37,9 +37,11 @@ abstract class _PomodoroStore with Store {
 
   @action
   void decrementarTempoTrabalho() {
-    tempoTrabalho--;
-    if (estaTrabalhando()) {
-      reiniciar();
+    if (tempoTrabalho > 1) {
+      tempoTrabalho--;
+      if (estaTrabalhando()) {
+        reiniciar();
+      }
     }
   }
 
@@ -53,9 +55,11 @@ abstract class _PomodoroStore with Store {
 
   @action
   void decrementarTempoDescanso() {
-    tempoDescanso--;
-    if (estaDescansando()) {
-      reiniciar();
+    if (tempoTrabalho > 1) {
+      tempoDescanso--;
+      if (estaDescansando()) {
+        reiniciar();
+      }
     }
   }
 
@@ -63,7 +67,7 @@ abstract class _PomodoroStore with Store {
   void iniciar() {
     iniciado = true;
     cronometro = Timer.periodic(
-      const Duration(milliseconds: 50),
+      const Duration(seconds: 1),
       (timer) {
         if (minutos == 0 && segundos == 0) {
           _trocarTipoIntervalo();
